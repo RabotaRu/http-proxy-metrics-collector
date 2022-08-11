@@ -57,8 +57,8 @@ changelog:
 dockers:
 - dockerfile: Dockerfile
   image_templates:
-  - "ghcr.io/rabotaru/hpmc:{{ .Version }}"
-  - "ghcr.io/rabotaru/hpmc:latest"
+  - "ghcr.io/rabotaru/http-proxy-metrics-collector:{{ .Version }}"
+  - "ghcr.io/rabotaru/http-proxy-metrics-collector:latest"
   
   build_flag_templates:
   - "--label=org.opencontainers.image.created={{ .Date }}"
@@ -66,7 +66,7 @@ dockers:
   - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
   - "--label=org.opencontainers.image.version={{ .Version }}"
   - "--label=org.opencontainers.image.licenses=MIT"
-  - "--label=org.opencontainers.image.source=https://github.com/rabotaru/hpmc"
+  - "--label=org.opencontainers.image.source=https://github.com/rabotaru/http-proxy-metrics-collector"
   - "--platform=linux/amd64"
   - "--target=goreleaser"
   - "--pull"
