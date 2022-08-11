@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/url"
 	"os"
 
@@ -9,9 +10,13 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-var target = os.Getenv("TARGET_URL")
+var (
+	target  = os.Getenv("TARGET_URL")
+	Version = "dev"
+)
 
 func main() {
+	fmt.Printf("http-proxy-metrics-collector version: %s\n", Version)
 	e := echo.New()
 	e.HideBanner = true
 	e.Use(middleware.Recover())

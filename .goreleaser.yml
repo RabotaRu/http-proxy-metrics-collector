@@ -1,0 +1,84 @@
+before:
+  hooks:
+  - go mod tidy
+
+builds:
+- env:
+  - CGO_ENABLED=0
+  - GO386=softfloat
+  goos:
+  - linux
+#  ignore:
+#  - goos: windows
+#  - goos: darwin
+  ldflags:
+  - -s -w -X github.com/RabotaRu/http-proxy-metrics-collector.Version={{ .Version }}
+
+checksum:
+  name_template: "checksums.txt"
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+release:
+  name_template: "v{{.Version}}"
+  #  draft: true
+  prerelease: auto
+
+changelog:
+  skip: false
+  use: github
+  sort: asc
+
+  groups:
+  - title: "Linter"
+    regexp: "^.*linter.*$"
+    order: 0
+  - title: "Tests"
+    regexp: "^.*tests?.*$"
+    order: 1
+  - title: "Documentation"
+    regexp: "^.*(documentation|docs?).*$"
+    order: 2
+  - title: "Bump"
+    regexp: "^.*[bB]ump?.*$"
+    order: 3
+  - title: "Other"
+    order: 999
+
+  filters:
+    exclude:
+    - "^WIP:"
+    - Merge pull request
+    - Merge branch
+    - go mod tidy
+    - typo
+
+dockers:
+- dockerfile: Dockerfile
+  image_templates:
+  - "ghcr.io/rabotaru/hpmc:{{ .Version }}"
+  - "ghcr.io/rabotaru/hpmc:latest"
+  
+  build_flag_templates:
+  - "--label=org.opencontainers.image.created={{ .Date }}"
+  - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+  - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+  - "--label=org.opencontainers.image.version={{ .Version }}"
+  - "--label=org.opencontainers.image.licenses=MIT"
+  - "--label=org.opencontainers.image.source=https://github.com/rabotaru/hpmc"
+  - "--platform=linux/amd64"
+  - "--target=goreleaser"
+  - "--pull"
+  
+  goos: linux
+  goarch: amd64
+  use: buildx
+
+nfpms:
+- homepage: https://github.com/rabotaru/http-proxy-metrics-collector
+  maintainer: TBD
+  formats:
+  - apk
+  - deb
+  - rpm
