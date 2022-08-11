@@ -10,20 +10,19 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-var (
-	target  = os.Getenv("TARGET_URL")
-	Version = "dev"
-)
+// Version is http-proxy-metrics-collector binary version.
+//nolint:gochecknoglobals
+var Version = "dev"
 
 func main() {
-	fmt.Printf("http-proxy-metrics-collector version: %s\n", Version)
 	e := echo.New()
 	e.HideBanner = true
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
+	e.Logger.Info(fmt.Sprintf("http-proxy-metrics-collector version: %s\n", Version))
 
 	// Setup proxy
-	url1, err := url.Parse(target)
+	url1, err := url.Parse(os.Getenv("TARGET_URL"))
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
