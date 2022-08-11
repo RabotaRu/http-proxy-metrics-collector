@@ -1,13 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"net/url"
 	"os"
 
 	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/gommon/log"
 )
 
 // Version is http-proxy-metrics-collector binary version.
@@ -17,9 +17,11 @@ var Version = "dev"
 func main() {
 	e := echo.New()
 	e.HideBanner = true
+	e.HidePort = true
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
-	e.Logger.Info(fmt.Sprintf("http-proxy-metrics-collector version: %s\n", Version))
+	e.Logger.SetLevel(log.INFO)
+	e.Logger.Infof("http-proxy-metrics-collector version: %s", Version)
 
 	// Setup proxy
 	url1, err := url.Parse(os.Getenv("TARGET_URL"))
