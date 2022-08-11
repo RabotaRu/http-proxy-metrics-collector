@@ -6,3 +6,8 @@
 2. Run proxy server `TARGET_URL="http://localhost:1323" go run main.go`
 3. Check proxy: `curl http://localhost:3000`  You will get `HelloWorld`
 
+```mermaid
+flowchart LR
+  curl -- GET --> localhost:3000 --> localhost:1323
+```
+
